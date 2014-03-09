@@ -2,6 +2,7 @@
 lock '3.1.0'
 
 set :application, 'rorla_api'
+set :user, 'deployer'
 set :repo_url, 'git@github.com:hschoidr/rorla_api.git'
 
 set :stage, :production
@@ -11,7 +12,7 @@ set :stage, :production
 set :branch, :cap3
 
 # Default deploy_to directory is /var/www/my_app
-set :deploy_to, '/home/#{fetch(:user)}/apps/#{fetch(:application)}/'
+set :deploy_to, '/home/deployer/apps/rorla_api'
 
 # Default value for :scm is :git
 # set :scm, :git
