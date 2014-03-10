@@ -20,6 +20,7 @@ group :development do
   gem 'capistrano',  '~> 3.1'
   gem 'capistrano-rails', '~> 1.1'
   gem 'capistrano-rbenv', '~> 2.0'
+  gem 'capistrano-nc', '~> 0.1.3'
 end
 
 # Gems for Everyday Rails Testing with RSpec
@@ -53,7 +54,7 @@ end
 # gem 'jbuilder'
 
 # Use unicorn as the app server
-# gem 'unicorn'
+gem 'unicorn'
 
 # Deploy with Capistrano
 # gem 'capistrano', :group => :development

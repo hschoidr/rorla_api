@@ -8,15 +8,20 @@ set :repo_url, 'git@github.com:hschoidr/rorla_api.git'
 set :stage, :production
 
 # Default branch is :master
-# ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
-set :branch, :cap3
+ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
+# set :branch, :cap3
 
 # Default deploy_to directory is /var/www/my_app
 set :deploy_to, '/home/deployer/apps/rorla_api'
+set :pty, true
 
 set :default_env, {
   'PATH' => "~/.rbenv/shims:~/.rbenv/bin:$PATH"
 }
+ 
+# Default value for :linked_files is []
+set :linked_files, %w{config/database.yml config/application.yml}
+set :linked_dirs, %w{bin log tmp}
  
 # Default value for :scm is :git
 # set :scm, :git
@@ -44,8 +49,9 @@ set :default_env, {
 
 # set :rbenv_type, :user # or :system, depends on your rbenv setup
 set :rbenv_ruby, '2.1.1'
+set :nc_terminal, 'com.googlecode.iterm2'
 
-# Dir.glob('config/deploy/recipes/*.rb').each { |recipe| load recipe }
+Dir.glob('config/deploy/recipes/*.rb').each { |recipe| load recipe }
 
 namespace :deploy do
 
@@ -57,6 +63,19 @@ namespace :deploy do
     end
   end
 
+  ask :db_user, 'deployer'
+  
+  ask :db_pass, '******'
+  
+  ask :db_admin_user, 'root'
+
+  after :starting, 'db:mysql:setup'
+  
+  ask :create_yaml, 'yes'
+  after "db:mysql:setup", :create_yaml do
+   db.create_yaml if fetch(:creat_yaml) == 'yes'
+  end
+  
   after :publishing, :restart
 
   after :restart, :clear_cache do
@@ -69,3 +88,5 @@ namespace :deploy do
   end
 
 end
+
+
